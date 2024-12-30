@@ -115,7 +115,7 @@ class TennisScore:
         # for 0-3 return point names
         if self.player1_score < self.WINNING_SCORE and self.player2_score < self.WINNING_SCORE:
             if self.player1_score == self.player2_score:
-                return f"{Score(self.player1_score).name.capitalize()}-all"
+                return f"{Score(self.player1_score).name.capitalize()}-All"
             return f"{Score(self.player1_score).name.capitalize()}-" \
                 f"{Score(self.player2_score).name.capitalize()}"
 
