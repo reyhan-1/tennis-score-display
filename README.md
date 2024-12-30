@@ -4,6 +4,7 @@ This simple Python program displays the current score during a tennis match.
 
 ## Features
 - Displays the current tennis score in standard format (e.g., "15-30", "Love-All", "Deuce", "Advantage for Player 1").
+- Program keep accepting new scores until the user terminates with 'exit'
 - Supports input directly through the command line or from a file using command line arguments.
 - Customizable player names for each game session, default Player 1 - Player 2 if names are not provided.
 - Handles common input errors like invalid score formats or missing files.
@@ -19,12 +20,20 @@ cd tennis-score-display
 - Check the Python version 
 Ensure that Python 3.x is installed on your local machine. You can check this by running ```python --version``` or ```python3 --version``` in your terminal or command prompt. 
 
-- The code uses the built-in Python libraries ```argparse``` and ```enum```, included by default in Python. Thus, setting up a virtual environment is optional. 
+- The code uses the built-in Python libraries ```argparse```, ```enum``` and ```sys```, included by default in Python. Thus, setting up a virtual environment is optional. 
 
 ## Run the Program 
-After setting up the environment, you can run the program in two ways using the command line arguments.
+After setting up the environment, you can run the program in default mode, or two ways using the command line arguments.
 
-### 1. User Input
+### 1. Default Mode
+Default mode is interactive, you can now run:
+
+```
+python main.py
+```
+The program will prompt you for scores until you type exit.
+
+### 2. Single User Input
 Score in the format X-Y (e.g., 3-5).
 ```bash
 python main.py 3-5
@@ -34,8 +43,8 @@ To specify custom player names, use the --names option:
 python main.py 3-5 --names Serena Naomi
 ```
 
-### 2. File 
-<file_path> is a text file containing scores in the format X-Y, one per line.
+### 3. Text File 
+<file_path> is a text file ending with(.txt) containing scores in the format X-Y, one per line.
 ```bash
 python main.py scores.txt
 ```

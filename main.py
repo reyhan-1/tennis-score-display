@@ -14,6 +14,7 @@ Usage:
 
 import argparse
 from enum import Enum
+import sys
 
 
 class Score(Enum):
@@ -145,23 +146,51 @@ def process_file(file_path, p1_name, p2_name):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Display the current score during a tennis game")
-    parser.add_argument("input", help="Current score in 'X-Y' format (e.g., '3-2') or a file path.")
+
+    # Allow optional player names argument
     parser.add_argument("--names", nargs=2, metavar=("PLAYER1", "PLAYER2"),
                         help="Optional player names (e.g., 'Djokovic Nadal').")
 
+    # Try to read the input argument if it's provided (it can be a score or file)
+    parser.add_argument("input", nargs="?", help="Current score in 'X-Y' format or a file path.")
+
     args = parser.parse_args()
 
-    # if no names provided, default is Player 1 - Player 2
+    # Default names for players if not provided
     player1_name, player2_name = args.names if args.names else ("Player 1", "Player 2")
 
-    if args.input.endswith(".txt"):
+    # Initialize the game object
+    game = TennisScore(player1_name, player2_name)
+
+    # If input is a file path, process the file
+    if args.input and args.input.endswith(".txt"):
         process_file(args.input, player1_name, player2_name)
-    else:
+
+    # If input is a score, process it and then enter the loop
+    elif args.input:
         try:
             player1_score, player2_score = map(int, args.input.split('-'))
-            game = TennisScore(player1_name, player2_name)
             game.player1_score = player1_score
             game.player2_score = player2_score
             print(f"Current Score: {game.current_score()}")
         except ValueError:
             print("Invalid input. Please provide scores in the format 'X-Y' or a valid file path.")
+            sys.exit()  # Exit if invalid score is provided
+
+    # Interactive input loop (if no input argument is provided or after processing a score)
+    while True:
+        user_input = input(
+            f"Enter the new score for {player1_name} - {player2_name} "
+            f"in 'X-Y' format or type 'exit' to quit: ").strip()
+
+        if user_input.lower() == 'exit':
+            print("Exiting the program.")
+            break  # Exit the loop and terminate the program
+
+        try:
+            player1_score, player2_score = map(int, user_input.split('-'))
+            game.player1_score = player1_score
+            game.player2_score = player2_score
+            print(f"Current Score: {game.current_score()}")
+        except ValueError:
+            print("Invalid input. Please provide scores in the format 'X-Y'.")
